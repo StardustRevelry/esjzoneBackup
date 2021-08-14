@@ -1,6 +1,6 @@
 # ！/usr/bin/python
 # -*-coding:utf-8-*-
-from asyncio import sleep
+from time import sleep
 
 import requests
 import os
@@ -8,9 +8,11 @@ import re
 from single_chapter import save_text
 
 # 网站url
-url = ''
+url = 'https://www.esjzone.cc/detail/.html'
 # 保存文件的路径
-file_path = ''
+file_path = 'D:/novels/'
+# 开始的行数
+start = 0
 
 # -------分--隔--线--------
 # 发送http请求
@@ -42,7 +44,11 @@ if not os.path.exists(file_path):
     # 目录不存在创建，makedirs可以创建多级目录
     os.makedirs(file_path)
 # 保存文件
+flag = 0
 for url in formatList:
-    save_text(url, file_path)
-    sleep(500)
+    if flag < start:
+        flag = flag+1
+    else:
+        save_text(url, file_path)
+        sleep(0.5)
 
