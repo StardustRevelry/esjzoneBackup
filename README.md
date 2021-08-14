@@ -4,7 +4,9 @@
 ## 更新
 简化了使用，现在只要命令行直接运行save_the_whole_book.py就可以使用了。
 
-其实已经打包好了，但是release功能不会用（萌新头大），所以还需要一段时间才会上传。
+虽然打包好了，但是我无法上传exe文件，只能使用百度网盘了
+链接：https://pan.baidu.com/s/14yQhSuQXjv7sEVoSmqfMLw
+提取码：1234
 
 ![image](https://user-images.githubusercontent.com/65816600/129440723-dc54e5e2-dffe-41fc-be4f-9920f6ae8621.png)
 ## 使用方法：
