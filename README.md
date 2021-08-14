@@ -21,6 +21,8 @@ url中填入整合页面的url 例：https://www.esjzone.cc/detail/----.html
 
 file_path中填本地保存的地址（会自动创建文件夹）
 
+更新：start后面填从第几章开始下载
+
 ## 其他注意事项
 关于繁简转换：在做了，已经新建文件夹了（笑）
 
