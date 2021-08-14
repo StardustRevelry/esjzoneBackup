@@ -8,11 +8,12 @@ import re
 from single_chapter import save_text
 
 # 网站url
-url = 'https://www.esjzone.cc/detail/.html'
+url = input('url:')
 # 保存文件的路径
-file_path = 'D:/novels/'
+file_path = input('file_path:')
+#'D:/novels/'
 # 开始的行数
-start = 0
+start = int(input('start from which line:'))
 
 # -------分--隔--线--------
 # 发送http请求
@@ -24,7 +25,7 @@ html = response.text
 # print(html)
 # 获取小说标题
 novel_title = html.split("<h2")[1].split("</h2>")[0]
-novel_title = novel_title[29:]
+novel_title = novel_title[28:]
 file_path = file_path+novel_title+'/'
 
 # 获取所有章节的url
