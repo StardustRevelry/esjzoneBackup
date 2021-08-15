@@ -57,6 +57,8 @@ def save_text(url, file_path,number):
     # 获取标题
     try:
         title = html.split("<h2>")[1].split("</h2>")[0]
+        title = re.sub(":"," ",title)
+        title = re.sub("："," ",title)
     except:
         # 请求失败，重新请求
         print(url + '请求失败')
@@ -74,6 +76,7 @@ def save_text(url, file_path,number):
         # 保存数据到文件
         with open(file_path + title + '.txt', 'w', encoding='utf-8') as f:
             f.write(text)
+            print(file_path + title + '.txt')
         print(title + ' 保存成功!')
         return True
     except Exception as e:
