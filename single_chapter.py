@@ -1,37 +1,18 @@
 # ！/usr/bin/python
 # -*-coding:utf-8-*-
+from time import sleep
+
 import requests
 import os
 import re
 
-# 网站url
-url = 'https://www.esjzone.cc/forum/1543764573/26517.html'
-# 保存文件的路径
-file_path = 'D:/novels/'
-
+# # 网站url
+# url = 'https://www.esjzone.cc/forum/1543764680/21073.html'
+# # 保存文件的路径
+# file_path = 'D:/novels/'
 
 # -------分--隔--线--------
 # 函数定义
-def requests_when_failed(this_url):
-    NETWORK_STATUS = True  # 判断状态变量
-    try:
-        response = requests.post(this_url, timeout=5)
-        if response.text != 'Connect failed: Too many connections':
-            if response.status_code == 200:
-                return response
-    except requests.exceptions.Timeout:
-        NETWORK_STATUS = False  # 请求超时改变状态
-
-        if not NETWORK_STATUS:
-            '''请求超时'''
-            for i in range(1, 10):
-                print('请求超时，第%s次重复请求')
-                response = requests.post(this_url, timeout=5)
-                if response.status_code == 200:
-                    return response
-    return -1
-
-
 def filter_tags(htmlstr):
     s = re.sub(r'</?\w+[^>]*>', '', htmlstr)
     s = replaceCharEntity(s)  # 替换实体
@@ -58,11 +39,18 @@ def replaceCharEntity(htmlstr):
     return htmlstr
 
 
-def save_text(url, file_path):
+def save_text(url, file_path,number):
     # 发送http请求
     response = requests.get(url)
     # 编码方式
     response.encoding = 'utf-8'
+    # 请求失败，重新请求
+    flag = 0
+    while len(response.text) < 100 | flag < 10:
+        print(url + '请求失败,开始第 {} 次重新请求'.format(flag + 1))
+        sleep(0.2)
+        response = requests.get(url)
+        flag = flag + 1
     # 目标小说主页的网站源码
     html = response.text
 
@@ -71,13 +59,8 @@ def save_text(url, file_path):
         title = html.split("<h2>")[1].split("</h2>")[0]
     except:
         # 请求失败，重新请求
-        response = requests_when_failed(url)
-        if response == -1:
-            print(url + "--请求失败")
-            return
-        response.encoding = 'utf-8'
-        html = response.text
-        title = html.split("<h2>")[1].split("</h2>")[0]
+        print(url + '请求失败')
+        return False
 
     # 获取正文
     text_with_html_format = html.split("forum-content mt-3")[1].split("single-post-meta m-t-20 file-text")[0]
@@ -92,13 +75,23 @@ def save_text(url, file_path):
         with open(file_path + title + '.txt', 'w', encoding='utf-8') as f:
             f.write(text)
         print(title + ' 保存成功!')
+        return True
     except Exception as e:
         print('保存失败:{}'.format(e))
+        try:
+            text = title + '\n\n' + text
+            with open(file_path + str(number) + '.txt', 'w', encoding='utf-8') as f:
+                f.write(text)
+            print(title+'   已重新保存到:\n' + str(number) + '.txt')
+            return True
+        except:
+            print('重新保存失败')
+            return False
 
 
-# 判断目录是否存在
-if not os.path.exists(file_path):
-    # 目录不存在创建，makedirs可以创建多级目录
-    os.makedirs(file_path)
-# 保存文件
+# # 判断目录是否存在
+# if not os.path.exists(file_path):
+#     # 目录不存在创建，makedirs可以创建多级目录
+#     os.makedirs(file_path)
+# # 保存文件
 # save_text(url, file_path)
